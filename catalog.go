@@ -2,34 +2,48 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/rancher/go-rancher/client"
+	"gopkg.in/yaml.v2"
 )
 
 var Catalog map[string]Template
 
-func Init(){
+var Schemas = Schemas{
+	Data: []Schema{
+		{},
+		{},
+	},
+}
+
+type TemplateCollection struct {
+	client.Collection
+	Data []Template `json:"data,omitempty"`
+}
+
+func Init() {
 	_, err := os.Stat("./DATA/templates")
-    if err != nil {
-    // check if the source is indeed a directory or not
+	if err != nil {
+		// check if the source is indeed a directory or not
 		cloneCatalog()
-    }
-    
-    Catalog = make(map[string]Template)
-    
-    var root = "./DATA/templates"
+	}
+
+	Catalog = make(map[string]Template)
+
+	var root = "./DATA/templates"
 
 	filepath.Walk(root, walkCatalog)
 }
 
-func cloneCatalog(){
-	 fmt.Println("Cloning the catalog from github")
+func cloneCatalog() {
+	fmt.Println("Cloning the catalog from github")
 	//git clone the github repo
-	e := exec.Command("git", "clone", "https://github.com/prachidamle/rancher-catalog", "./DATA");
+	e := exec.Command("git", "clone", "https://github.com/prachidamle/rancher-catalog", "./DATA")
 	e.Run()
 }
 
