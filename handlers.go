@@ -2,9 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/gorilla/mux"
 	"github.com/rancher/go-rancher/client"
 	"net/http"
-	"github.com/gorilla/mux"
 )
 
 func ListTemplates(w http.ResponseWriter, r *http.Request) {
@@ -27,13 +28,20 @@ func LoadTemplateDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	path := vars["templatePath"]
 	templateMetadata, ok := Catalog[path]
-	if ok{
+	if ok {
 		templateMetadata.VersionLinks = PopulateTemplateLinks(r, &templateMetadata)
 		PopulateResource(r, "template", templateMetadata.Name, &templateMetadata.Resource)
 		w.Header().Add("Content-Type", "application/json; charset=utf-8")
 		json.NewEncoder(w).Encode(templateMetadata)
 	}
 
+}
+
+func LoadImage(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	path := "DATA/templates/" + vars["templateId"] + "/" + vars["versionId"] + "/" + vars["imageId"]
+	fmt.Printf("path is%s.\n", path)
+	http.ServeFile(w, r, path)
 }
 
 func PopulateCollection(collection *client.Collection) {
@@ -48,6 +56,8 @@ func PopulateTemplateLinks(r *http.Request, template *Template) map[string]strin
 		copyOfversionLinks[key] = BuildURL(r, "template", value)
 	}
 
+	template.IconLink = BuildURL(r, "image", template.IconLink)
+	
 	return copyOfversionLinks
 }
 
@@ -62,14 +72,13 @@ func PopulateResource(r *http.Request, resourceType, resourceId string, resource
 }
 
 func BuildURL(r *http.Request, resourceType, resourceId string) string {
-	
-	var scheme string = "http://" 
-	var host string = r.Host 
-    var pluralName string =  resourceType + "s"
-    var version string = "v1"
-    
-    //get the baseURI
-    return scheme + host + "/" + version + "/" + pluralName + "/" + resourceId
-    
+
+	var scheme string = "http://"
+	var host string = r.Host
+	var pluralName string = resourceType + "s"
+	var version string = "v1"
+
+	//get the baseURI
+	return scheme + host + "/" + version + "/" + pluralName + "/" + resourceId
 
 }

@@ -42,4 +42,16 @@ var routes = Routes{
 		"/v1/templates/{templatePath}",
 		LoadTemplateDetails,
 	},
+	Route{
+		"LoadVersionImage",
+		"GET",
+		"/v1/images/{templateId}/{versionId}/{imageId}",
+		LoadImage,
+	},
+	Route{
+		"LoadImage",
+		"GET",
+		"/v1/images/{templateId}/{imageId}",
+		LoadImage,
+	},
 }

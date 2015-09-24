@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	//"strings"
+	"strings"
 )
 
 var Catalog map[string]Template
@@ -72,10 +72,10 @@ func walkCatalog(path string, f os.FileInfo, err error) error {
 		for _, subfile := range dirList {
 			if subfile.IsDir() {
 				newTemplate.VersionLinks[subfile.Name()] = f.Name() + "/" + subfile.Name()
+			}else if(strings.HasPrefix(subfile.Name(), "catalogIcon")){
+				newTemplate.IconLink = f.Name() + "/" + subfile.Name()
 			}
 		}
-		newTemplate.IconLink = "link to icon"
-
 		Catalog[f.Name()] = newTemplate
 	} else {
 		fmt.Printf("Walking path %s with file name %s \n", path, f.Name())
