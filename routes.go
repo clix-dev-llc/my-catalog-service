@@ -39,8 +39,14 @@ var routes = Routes{
 	Route{
 		"LoadTemplateDetails",
 		"GET",
-		"/v1/templates/{templatePath}",
-		LoadTemplateDetails,
+		"/v1/templates/{templateId}",
+		LoadTemplateMetadata,
+	},
+	Route{
+		"LoadTemplateDetails",
+		"GET",
+		"/v1/templates/{templateId}/{versionId}",
+		LoadTemplateVersion,
 	},
 	Route{
 		"LoadVersionImage",

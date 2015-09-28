@@ -24,18 +24,31 @@ func ListTemplates(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func LoadTemplateDetails(w http.ResponseWriter, r *http.Request) {
+func LoadTemplateMetadata(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	path := vars["templatePath"]
+	path := vars["templateId"]
 	templateMetadata, ok := Catalog[path]
 	if ok {
 		templateMetadata.VersionLinks = PopulateTemplateLinks(r, &templateMetadata)
 		PopulateResource(r, "template", templateMetadata.Name, &templateMetadata.Resource)
 		w.Header().Add("Content-Type", "application/json; charset=utf-8")
 		json.NewEncoder(w).Encode(templateMetadata)
+	} else {
+		//404
 	}
-
 }
+
+func LoadTemplateVersion(w http.ResponseWriter, r *http.Request){
+	//read the template version from disk
+	vars := mux.Vars(r)	
+	path := vars["templateId"] + "/" + vars["versionId"]
+	template := readTemplateVersion(path)
+	template.VersionLinks = PopulateTemplateLinks(r, &template)
+	PopulateResource(r, "template", template.Name, &template.Resource)
+	w.Header().Add("Content-Type", "application/json; charset=utf-8")
+	json.NewEncoder(w).Encode(template)
+}
+
 
 func LoadImage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
