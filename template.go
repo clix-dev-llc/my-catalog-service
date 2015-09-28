@@ -13,13 +13,14 @@ type Template struct {
 	DockerCompose  string            `json:"dockerCompose"`
 	RancherCompose string            `json:"rancherCompose"`
 	Questions      []Question	     `json:"questions"`
+	Path 		   string            `json:"path"`
 }
 
 var Templates map[string]Template
 
 type Question struct {
-	Name           string            `yaml:"name"`
-	Description    string            `yaml:"description"`
-	Type		   string            `yaml:"type"`
-	Options		   []string          `yaml:"options"`
+	Name           string            `json:"name"`
+	Description    string            `json:"description"`
+	Type		   string            `json:"type"`
+	Options		   []string          `json:"options"`
 }

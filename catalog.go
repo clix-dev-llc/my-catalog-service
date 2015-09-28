@@ -65,6 +65,7 @@ func walkCatalog(path string, f os.FileInfo, err error) error {
 		newTemplate.Category = config["category"]
 		newTemplate.Description = config["description"]
 		newTemplate.DefaultVersion = config["defaultVersion"]
+		newTemplate.Path = f.Name() 
 
 		//list the folders under the root level
 		newTemplate.VersionLinks = make(map[string]string)
@@ -99,6 +100,7 @@ func readTemplateVersion(path string) Template{
 				newTemplate.Category = config["category"]
 				newTemplate.Description = config["description"]
 				newTemplate.DefaultVersion = config["defaultVersion"]
+				newTemplate.Path = path 
 				
 			}else if strings.HasPrefix(subfile.Name(), "catalogIcon"){
 				newTemplate.IconLink = path + "/" + subfile.Name()

@@ -44,7 +44,7 @@ func LoadTemplateVersion(w http.ResponseWriter, r *http.Request){
 	path := vars["templateId"] + "/" + vars["versionId"]
 	template := readTemplateVersion(path)
 	template.VersionLinks = PopulateTemplateLinks(r, &template)
-	PopulateResource(r, "template", template.Name, &template.Resource)
+	PopulateResource(r, "template", template.Path, &template.Resource)
 	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(template)
 }
