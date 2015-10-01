@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-//	"github.com/rancher/rancher-compose/rancher"
 )
 
 var Catalog map[string]Template
@@ -116,44 +115,10 @@ func readTemplateVersion(path string) Template{
 				
 				//read the questions section
 				
-				/*config := make(map[string]RancherCompose)
-				//RC := RancherCompose{}
-				_ = yaml.Unmarshal(composeBytes, &config)
+				RC := make(map[string]RancherCompose)
+				_ = yaml.Unmarshal(composeBytes, &RC)
 				
-				CS := config["myService"]
-				
-				fmt.Printf("rancherCompose.scale, name:%d \n", CS.Scale)
-				fmt.Printf("rancherCompose.scale, name:%v \n", CS.Questions)
-				//fmt.Printf("rancherCompose.scale, name:%s \n", config["myService"])
-				/*for _, value := range RancherCompose.Questions {
-					fmt.Printf("rancherCompose.scale, name:%s \n", value.Name)	
-				}*/
-				
-				FirstQ := Question{}
-				FirstQ.Name = "What is Question1?"
-				FirstQ.Description = "This is Question1"
-				FirstQ.Type = "string"
-				
-				SecondQ := Question{}
-				SecondQ.Name = "What is Question2?"
-				SecondQ.Description = "This is Question2"
-				SecondQ.Type = "int"
-				
-				ThirdQ := Question{}
-				ThirdQ.Name = "What is Question3?"
-				ThirdQ.Description = "This is Question3"
-				ThirdQ.Type = "boolean"
-				
-				FourthQ := Question{}
-				FourthQ.Name = "What is Question4?"
-				FourthQ.Description = "This is Question4"
-				FourthQ.Type = "enum"
-				FourthQ.Options = []string{"option1","option2"}
-				
-				newTemplate.Questions = append(newTemplate.Questions, FirstQ)
-				newTemplate.Questions = append(newTemplate.Questions, SecondQ)
-				newTemplate.Questions = append(newTemplate.Questions, ThirdQ)
-				newTemplate.Questions = append(newTemplate.Questions, FourthQ)
+				newTemplate.Questions = RC["myService"].Questions
 				
 			}
 		}
