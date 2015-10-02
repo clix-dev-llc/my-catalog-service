@@ -1,6 +1,6 @@
 package main
 
-import "github.com/rancher/rancher-compose/rancher"
+//import "github.com/rancher/rancher-compose/rancher"
 
 type Question struct {
 	Name           string            `json:"name" yaml:"name"`
@@ -11,7 +11,7 @@ type Question struct {
 
 
 type RancherCompose struct {
-	rancher.RancherConfig	`yaml:",inline"`
+	//rancher.RancherConfig	`yaml:",inline"`
 	Questions []Question	`json:"questions" yaml:"questions,omitempty"`
 }
 
