@@ -34,6 +34,8 @@ func Init() {
 	_, err := os.Stat(catalogRoot)
 	if err != nil {
 		cloneCatalog()
+	}else {
+		pullCatalog()
 	}
 
 	Catalog = make(map[string]Template)
@@ -44,7 +46,20 @@ func cloneCatalog() {
 	fmt.Println("Cloning the catalog from github")
 	//git clone the github repo
 	e := exec.Command("git", "clone", "https://github.com/prachidamle/rancher-catalog", "./DATA")
-	e.Run()
+	err := e.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func pullCatalog() {
+	fmt.Println("Pulling the catalog from github to sync changes")
+	
+	e := exec.Command("git", "-C", "./DATA", "pull", "origin", "master")
+	err := e.Run()
+	if err != nil {
+		fmt.Println("error in pull", err)
+	}
 }
 
 func walkCatalog(path string, f os.FileInfo, err error) error {
@@ -118,7 +133,10 @@ func readTemplateVersion(path string) Template{
 				RC := make(map[string]RancherCompose)
 				_ = yaml.Unmarshal(composeBytes, &RC)
 				
-				newTemplate.Questions = RC["myService"].Questions
+				//newTemplate.Questions = RC["myService"].Questions
+				for key, _ := range RC {
+					newTemplate.Questions = RC[key].Questions
+				}
 				
 			}
 		}
